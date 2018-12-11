@@ -58,8 +58,8 @@ void addStudent(Node* next, Student* student) {
 void printStudents(Node* next, Student* student) {
   Node* current = head;
   cout << "Test" << endl;
-  current->getStudent();
-  cout << student->getfirst() << endl;
+  Student* s = current->getStudent();
+  cout << s->getfirst() << endl;
   if (current->getNext() != NULL) {
     printStudents(current->getNext(), student);
   }
