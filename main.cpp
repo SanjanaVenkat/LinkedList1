@@ -6,40 +6,64 @@
 
 using namespace std;
 
-void printStudents(class Student);
-void addStudent(class Student);
+void printStudents(Node* next, Student* student);
+void addStudent(Node* next, Student* student);
 void deleteStudent(class Student);
+
+Node* head = NULL;
 
 vector<Student*>* studentlist;
 
-void addStudent(vector <Student*>* studentlist) {
+void addStudent(Node* next, Student* student) {
   char f[100];
   char l[100];
   int i = 0;
   float g = 0;
-  Student* student = new Student();
+  Student* s = new Student();
+  Node* current = head;
+  if (current == NULL) {
+    cout << "Enter student first name" << endl;
+    cin >> f;
+    s->setfirst(f);
+    cout << "Enter student last name" << endl;
+    cin >> l;
+    s->setlast(l);
+    cout << "Enter student ID" << endl;
+    cin >> i;
+    s->setid(i);
+    cout << "Enter student GPA" << endl;
+    cin >> g;
+    s->setgpa(g);
+  }
+  else {
+    while (current ->getNext() != NULL) {
+      current = current->getNext();
+    }
+    current->setNext(new Node(s));
   cout << "Enter student first name" << endl;
   cin >> f;
-  student->setfirst(f);
+  s->setfirst(f);
   cout << "Enter student last name" << endl;
   cin >> l;
-  student->setlast(l);
+  s->setlast(l);
   cout << "Enter student ID" << endl;
   cin >> i;
-  student->setid(i);
+  s->setid(i);
   cout << "Enter student GPA" << endl;
   cin >> g;
-  student->setgpa(g);
-  studentlist->push_back(student);
-}
-
-void printStudents(vector <Student*>* studentlist) {
-  for (int i = 0; i < studentlist->size(); i++) {
-    Student* s = (*studentlist)[i];
-    cout << s->getfirst() << " " << s->getlast() << " " << s->getid() << " " << s->getgpa() << endl;
-
+  s->setgpa(g);
   }
 }
+
+void printStudents(Node* next, Student* student) {
+  Node* current = head;
+  cout << "Test" << endl;
+  current->getStudent();
+  cout << student->getfirst() << endl;
+  if (current->getNext() != NULL) {
+    printStudents(current->getNext(), student);
+  }
+  }
 
 
 void deleteStudent(vector <Student*>* studentlist) {
@@ -76,6 +100,7 @@ void getResponse(char response[10]) {
 
 
 int main() {
+  Student* student = new Student();
  vector <Student*>* studentlist = new vector<Student*>();
 char response[10];
  char add[] = "ADD";
@@ -86,12 +111,12 @@ char response[10];
  getResponse(response);
   while (running == true) {
     if (strcmp(add, response) == 0) {
-        addStudent(studentlist);
+      addStudent(head, student);
         getResponse(response);
         }
     else if (strcmp(print, response) == 0)
      {
-      printStudents(studentlist);
+       printStudents(head, student);
       getResponse(response);
            }
     else  if (strcmp(del, response) == 0) {
