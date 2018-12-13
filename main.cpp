@@ -6,40 +6,20 @@
 
 using namespace std;
 
-void printStudents(Node* next, Student* student);
-void addStudent(Node* next, Student* student);
-void deleteStudent(class Student);
-
-Node* head = NULL;
+void printStudents(Node* start);
+Node* addStudent(Node* start);
+void deleteStudent(Student* student);
 
 vector<Student*>* studentlist;
 
-void addStudent(Node* next, Student* student) {
+Node* addStudent(Node* start) {
   char f[100];
   char l[100];
   int i = 0;
   float g = 0;
+  Node* current = start;
+  Node* first = start;
   Student* s = new Student();
-  Node* current = head;
-  if (current == NULL) {
-    cout << "Enter student first name" << endl;
-    cin >> f;
-    s->setfirst(f);
-    cout << "Enter student last name" << endl;
-    cin >> l;
-    s->setlast(l);
-    cout << "Enter student ID" << endl;
-    cin >> i;
-    s->setid(i);
-    cout << "Enter student GPA" << endl;
-    cin >> g;
-    s->setgpa(g);
-  }
-  else {
-    while (current ->getNext() != NULL) {
-      current = current->getNext();
-    }
-    current->setNext(new Node(s));
   cout << "Enter student first name" << endl;
   cin >> f;
   s->setfirst(f);
@@ -52,16 +32,26 @@ void addStudent(Node* next, Student* student) {
   cout << "Enter student GPA" << endl;
   cin >> g;
   s->setgpa(g);
+  if (current == NULL) {
+    current = new Node(s);
+    first = current;
   }
-}
+  else {
+    while (current->getNext() != NULL) {
+      current = current->getNext();
+    }
+    Node* n = new Node(s);
+    current->setNext(n);
+  }
+  return first;
+  }
 
-void printStudents(Node* next, Student* student) {
-  Node* current = head;
-  cout << "Test" << endl;
-  Student* s = current->getStudent();
-  cout << s->getfirst() << endl;
-  if (current->getNext() != NULL) {
-    printStudents(current->getNext(), student);
+void printStudents(Node* start) {
+  Node* current = start;
+  while (current != NULL) {
+    Student* s = current->getStudent();
+    cout << s->getfirst() << " " << s->getlast() << " " << s->getid() << " " << s->getgpa() << endl;
+    current = current->getNext();
   }
   }
 
@@ -100,7 +90,7 @@ void getResponse(char response[10]) {
 
 
 int main() {
-  Student* student = new Student();
+  Node* start = NULL;
  vector <Student*>* studentlist = new vector<Student*>();
 char response[10];
  char add[] = "ADD";
@@ -111,12 +101,12 @@ char response[10];
  getResponse(response);
   while (running == true) {
     if (strcmp(add, response) == 0) {
-      addStudent(head, student);
-        getResponse(response);
+      start = addStudent(start);
+      getResponse(response);
         }
     else if (strcmp(print, response) == 0)
      {
-       printStudents(head, student);
+       printStudents(start);
       getResponse(response);
            }
     else  if (strcmp(del, response) == 0) {
