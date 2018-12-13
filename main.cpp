@@ -8,9 +8,8 @@ using namespace std;
 
 void printStudents(Node* start);
 Node* addStudent(Node* start);
-void deleteStudent(Student* student);
+void deleteStudent(Node* start);
 
-vector<Student*>* studentlist;
 
 Node* addStudent(Node* start) {
   char f[100];
@@ -47,6 +46,7 @@ Node* addStudent(Node* start) {
   }
 
 void printStudents(Node* start) {
+  
   Node* current = start;
   while (current != NULL) {
     Student* s = current->getStudent();
@@ -56,27 +56,45 @@ void printStudents(Node* start) {
   }
 
 
-void deleteStudent(vector <Student*>* studentlist) {
+void deleteStudent(Node* start) {
   int studentid;
   int index;
   bool idexists = false;
+  Node* current = start;
+  Node* next = NULL;
   cout << "Enter student id" << endl;
   cin >> studentid;
-   for (int i = 0; i < studentlist->size(); i++) {
-    Student* s = (*studentlist)[i];
-    if (s->getid() == studentid) {
-      index = i;
-      idexists = true;
-      break;
+  //while current is valid and has not found id
+  while (current != NULL && idexists == false) {
+    //current student
+    Student* s = current->getStudent();
+    if (current->getNext() != NULL) {
+      next = current;
     }
+    
+    if (studentid == s->getid()) {
+      if (next->getNext() != NULL) {
+	next->setNext(next->getNext());
+      }
+      delete current->getStudent();
+      current = NULL;
+      idexists = true;
+    }
+    
+    else {
+      current = current->getNext();
+    }
+
   }
-   if (idexists == true) {
-   studentlist->erase(studentlist->begin()+index);
-   cout << "Deleted student" << endl;
-   }
-   else {
-     cout << "ID doesn't exist in student list" << endl;
-   }
+
+  Node* first = start;
+  while (first != NULL) {
+    Student* s = first->getStudent();
+    cout << s->getfirst() << " " << s->getlast() << " " << s->getid() << " " << s->getgpa() << endl;
+    first = first->getNext();
+  }
+    
+
 }
 
 void getResponse(char response[10]) {
@@ -110,7 +128,7 @@ char response[10];
       getResponse(response);
            }
     else  if (strcmp(del, response) == 0) {
-      deleteStudent(studentlist);
+      deleteStudent(start);
       getResponse(response);
 
       }
