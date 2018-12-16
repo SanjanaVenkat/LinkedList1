@@ -8,7 +8,7 @@ using namespace std;
 
 void printStudents(Node* start);
 Node* addStudent(Node* start);
-void deleteStudent(Node* start);
+Node* deleteStudent(Node* start);
 
 
 Node* addStudent(Node* start) {
@@ -56,45 +56,49 @@ void printStudents(Node* start) {
   }
 
 
-void deleteStudent(Node* start) {
+Node* deleteStudent(Node* start) {
+  Node* newstart = start;
   int studentid;
   int index;
   bool idexists = false;
   Node* current = start;
-  Node* next = NULL;
+  Node* track = NULL;
   cout << "Enter student id" << endl;
   cin >> studentid;
   //while current is valid and has not found id
+ 
   while (current != NULL && idexists == false) {
     //current student
     Student* s = current->getStudent();
-    if (current->getNext() != NULL) {
-      next = current;
-    }
     
     if (studentid == s->getid()) {
-      if (next->getNext() != NULL) {
-	next->setNext(next->getNext());
+      if (track != NULL) {
+	track->setNext(current->getNext());
       }
-      delete current->getStudent();
-      current = NULL;
+      else {
+	newstart = newstart->getNext();
+      }
       idexists = true;
     }
-    
+       
     else {
+      track = current;
       current = current->getNext();
+      
     }
-
+ 
   }
-
-  Node* first = start;
-  while (first != NULL) {
-    Student* s = first->getStudent();
+  delete current->getStudent();
+  delete current;
+  /*
+  Node* test = start;
+  while (test != NULL) {
+    Student* s = test->getStudent();
     cout << s->getfirst() << " " << s->getlast() << " " << s->getid() << " " << s->getgpa() << endl;
-    first = first->getNext();
+    test = track->getNext();
   }
-    
-
+  */
+  return newstart;
 }
 
 void getResponse(char response[10]) {
@@ -128,7 +132,7 @@ char response[10];
       getResponse(response);
            }
     else  if (strcmp(del, response) == 0) {
-      deleteStudent(start);
+      start = deleteStudent(start);
       getResponse(response);
 
       }

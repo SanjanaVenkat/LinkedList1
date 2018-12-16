@@ -51,6 +51,7 @@ Node::Node(Student* s) {
 
 Node::~Node() {
   next = NULL;
+  //  delete student;
 }
 
 void Node::setNext(Node* newnext) {
