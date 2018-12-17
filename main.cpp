@@ -1,8 +1,12 @@
+//Sanjana Venkat
+//12.17.18
+//Student list project using linked lists
 #include <iostream>
 #include <cstring>
-#include "node.h"
 #include <vector>
 #include <iomanip>
+#include "student.h"
+#include "node.h"
 
 using namespace std;
 
@@ -10,7 +14,7 @@ void printStudents(Node* start);
 Node* addStudent(Node* start);
 Node* deleteStudent(Node* start);
 
-
+//adds a student
 Node* addStudent(Node* start) {
   char f[100];
   char l[100];
@@ -45,6 +49,7 @@ Node* addStudent(Node* start) {
   return first;
   }
 
+//prints all students
 void printStudents(Node* start) {
   
   Node* current = start;
@@ -55,7 +60,7 @@ void printStudents(Node* start) {
   }
   }
 
-
+//deletes student by id
 Node* deleteStudent(Node* start) {
   Node* newstart = start;
   int studentid;
@@ -88,19 +93,19 @@ Node* deleteStudent(Node* start) {
     }
  
   }
+  if (idexists == true) {
   delete current->getStudent();
   delete current;
-  /*
-  Node* test = start;
-  while (test != NULL) {
-    Student* s = test->getStudent();
-    cout << s->getfirst() << " " << s->getlast() << " " << s->getid() << " " << s->getgpa() << endl;
-    test = track->getNext();
+  cout << "Student deleted" << endl;
   }
-  */
+  else {
+    cout << "Student with this ID does not exist" << endl;
+  }
+ 
   return newstart;
 }
 
+//asks what user wants to do
 void getResponse(char response[10]) {
   bool running = true;
   cout << "Enter ADD, PRINT, DELETE, or QUIT" << endl;
@@ -110,7 +115,7 @@ void getResponse(char response[10]) {
 
 
 
-
+//main, runs functions based on response
 int main() {
   Node* start = NULL;
  vector <Student*>* studentlist = new vector<Student*>();
